@@ -2,19 +2,27 @@
 
 .container {
     display: grid;
-    grid-template-columns: 30% auto;
+    grid-template-columns: 35% auto;
 
     .tabNav {
-        // background-color: red;
+        background-color: vars.$white;
+        padding: 0.8rem;
+        border-radius: 1rem;
     }
 
     .audio {
-        background-color: blue;
+        background-color: vars.$navy;
         margin: 1rem auto;
         padding: 1rem;
+        border-radius: 1rem;
     }
 
     .tabContent {
         padding: 1rem;
+    }
+
+    .playAgain {
+        margin-top: 1rem;
+        color: vars.$yellow;
     }
 }
