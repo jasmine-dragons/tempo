@@ -1,0 +1,27 @@
+@use "src/styles/vars.scss" as vars;
+
+.container {
+    margin: 2rem;
+    color: vars.$white;
+  
+    .step {
+      margin: 1.2rem auto;
+    }
+  
+    .start {
+      color: vars.$yellow;
+
+      // copy and pasted the animation
+      transition: 0.3s all;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      width: 15rem;
+
+      &:hover {
+        transform: scale(1.1);
+        transform-origin: left;
+        font-weight: 500;
+      }
+    }
+  }
