@@ -1,21 +1,41 @@
-@use 'src/styles/vars.scss' as vars;
+@use "src/styles/vars.scss" as vars;
 
 .container {
-    background-color: vars.$red;
-    padding: 2rem;
-    border-radius: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  background-color: vars.$white;
+  padding: 2rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-    .playerCard {
-        padding: 1rem;
+  .header {
+    color: vars.$navy;
+  }
+
+  .playerCard {
+    padding: 0.5rem;
+    padding-right: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    flex-direction: row;
+    border-radius: 1rem;
+    background-color: vars.$navy;
+    color: vars.$white;
+    align-items: center;
+
+    .playerInfo {
         display: flex;
         flex-direction: row;
         gap: 1rem;
-        border-radius: 1rem;
-        background-color: vars.$white;
-        color: vars.$navy;
         align-items: center;
     }
+
+    &.empty {
+        opacity: 0.8;
+        background-color: transparent;
+        border: 2px solid #c5c5c5;
+        color: vars.$navy;
+    }
+  }
 }
