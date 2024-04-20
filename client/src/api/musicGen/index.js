@@ -2,6 +2,7 @@ import {
   AutoTokenizer,
   MusicgenForConditionalGeneration,
   BaseStreamer,
+  env,
 } from "./js/transformers.js";
 
 // Library for turning audio data array into a WAV file
@@ -70,7 +71,7 @@ function writeString(view, offset, string) {
 }
 
 // Main function that starts the (download and) music generation process
-export async function make_funky_music(onProgress, prompt, temperature, duration) {
+export async function generateMusic(onProgress, prompt, temperature, duration) {
   // Load tokenizer and model
   const tokenizer = await AutoTokenizer.from_pretrained(
     "Xenova/musicgen-small",
@@ -99,6 +100,23 @@ export async function make_funky_music(onProgress, prompt, temperature, duration
 
   let guidance_scale = null;
 
+  class CallbackStreamer extends BaseStreamer {
+    constructor(callback_fn) {
+      super();
+      this.callback_fn = callback_fn;
+    }
+
+    put(value) {
+      return this.callback_fn(value);
+    }
+
+    end() {
+      return this.callback_fn();
+    }
+  }
+
+  const streamer = new CallbackStreamer(() => {});
+
   // Generate audio
   const audio_values = await model.generate({
     // Inputs
@@ -116,5 +134,5 @@ export async function make_funky_music(onProgress, prompt, temperature, duration
   // turn array into a WAV file
   let wav = encodeWAV(audio_values.ort_tensor.cpuData, 3, 32000, 1, 32); // The MusicGen model outputs at a samplerate of 32000, 1 channel (mono), 32 bit data,
   let wav_blob = new Blob([wav], { type: "audio/wav" });
-  return wav_blob
+  return wav_blob;
 }
