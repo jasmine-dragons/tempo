@@ -7,6 +7,7 @@ import Link from "next/link";
 const ReviewTab = () => {
 
   const players = ["test", "test1", "test2", "test3"];
+
   const [active, setActive] = useState<string>(players[0]);
 
   return (
