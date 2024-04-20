@@ -1,4 +1,5 @@
 import PlayersDisplay from "@/components/PlayersDisplay";
+import InfoDisplay from "@/components/InfoDisplay";
 import styles from "./page.module.scss";
 import { Player } from "@/types";
 
@@ -25,6 +26,7 @@ export default function Game() {
     <main>
       <div className={styles.container}>
         <PlayersDisplay players={PLAYERS} waiting/>
+        <InfoDisplay/>
       </div>
     </main>
   );
