@@ -19,22 +19,23 @@ const gameState = {
 
 const io = new Server(server, {
   // options
+  cors: {
+    origin: "*"
+  }
 });
 
-io.on("connection", (socket) => {
+io.on("connect", (socket) => {
   // ...
   gameState.players.push(socket);
-  socket.emit("gameState", gameState);
 
-  socket.on('player join', ( { name, room }, callback) => {
+  socket.on('player join', ( { name, room }) => {
     const { user, error } = addUser(socket.id, name, room);
-    if (error) return callback(error);
+    if (error) return;
     //gameState.players.push({ id: socket.id, name, room });
     socket.join(user.room);
     socket.in(room).emit('notification', { title: 'Someone\'s here', description: `${user.name} just entered the room`});
     io.in(room).emit('users', getUsers(room));
     //io.emit('gameState', gameState);
-    callback();
   });
 
   socket.on('game start', () => {
@@ -52,7 +53,7 @@ io.on("connection", (socket) => {
     io.emit("gameState", gameState);
   });
 
-  console.log("connection started!");
+  console.log(`connection: ${socket.id}!`);
 });
 
 dotenv.config();
@@ -70,3 +71,4 @@ app.use("/", router);
 server.listen(port, () => {
   console.log("Server started on port 8000!");
 });
+io.listen(9000)
