@@ -9,8 +9,6 @@ import { useRouter } from "next/navigation";
 import Hero from "@/components/Hero";
 import { io } from "socket.io-client";
 
-//const socket = io();
-
 export default function Home() {
   const [code, setCode] = useState<string>("");
   const [user, setUser] = useState<string>("");
@@ -18,12 +16,13 @@ export default function Home() {
 
   const onCreate = async () => {
     try {
-      console.log("lemme into the sock")
-      const socket = io("ws://localhost:8000", {reconnectionDelay: 1000});
+      console.log("lemme into the sock");
+      const socket = io("ws://localhost:8000", { reconnectionDelay: 1000 });
       socket.on("connect", () => {
         console.log("connected");
-      }); 
+      });
       const gameSession = await createGame(user);
+      socket.emit("player join", { name: user, room: gameSession.sessionId });
       router.push(`/game/${gameSession.sessionId}`);
     } catch (e) {
       console.error(e);
@@ -32,7 +31,9 @@ export default function Home() {
 
   const onJoin = async () => {
     try {
+      const socket = io("ws://localhost:8000", { reconnectionDelay: 1000 });
       const gameSession = await joinGame(code, user);
+      socket.emit("player join", { name: user, room: gameSession.sessionId });
       router.push(`/game/${gameSession.sessionId}`);
     } catch (e) {
       console.error(e);
