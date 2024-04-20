@@ -1,7 +1,11 @@
 import styles from "./style.module.scss";
 
-const Loading = () => {
-  return <div className={styles.loading} />;
+interface LoadingProps {
+  className?: string;
+}
+
+const Loading = ({ className }: LoadingProps) => {
+  return <div className={`${styles.loading} ${className || ""}`} />;
 };
 
 export default Loading;
