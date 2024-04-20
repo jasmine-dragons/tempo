@@ -14,7 +14,7 @@ router.get("/game/:id", async (req, res) => {
     return res.status(404).json({ error: "Game not found" });
   }
 
-  res.status(200).json(game);
+  res.status(200).json({ game });
 });
 
 router.post("/game/:id/join", async (req, res) => {
@@ -36,22 +36,22 @@ router.post("/game/:id/join", async (req, res) => {
 
   await game.save();
 
-  res.status(200).json(game);
+  res.status(200).json({ game });
 });
 
 router.post('/game', async (req, res) => {
    
    // create a game session
-
    // generate a unique session id
   const sessionId = uuid.v4();
    const newGame = {
       sessionId: sessionId,
-      gameLeader: req.body.gameLeader,
+      gameLeader: req.body.user,
+      users: [req.body.user]
    }
-   const savedGame = await GameSession.create(newGame);
+   const game = await GameSession.create(newGame);
 
-  res.json({ savedGame });
+  res.json({ game });
 });
 
 export default router;
