@@ -1,4 +1,12 @@
+@use "src/styles/vars.scss" as vars;
+
 .container {
   display: grid;
   grid-template-columns: 35% auto;
+}
+
+@media (max-width: vars.$breakpoint) {
+    .container {
+        display: block;
+    }
 }
