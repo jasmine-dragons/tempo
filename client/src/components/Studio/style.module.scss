@@ -1,0 +1,30 @@
+@use "src/styles/vars.scss" as vars;
+
+
+.container {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 5rem;
+    align-items: center;
+}
+.music {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    background-color: vars.$white;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    .button {
+        padding: 1rem;
+        border-radius: 1rem;
+        border: 0;
+        background-color: vars.$blue;
+    }
+}
