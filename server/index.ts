@@ -7,6 +7,8 @@ import router from "./api";
 import { createServer } from "http";
 import { Server } from "socket.io";
 
+const { addUser, getUser, deleteUser, getUsers } = require("./users");
+
 const server = createServer(app);
 const port = process.env.PORT || 8000;
 
@@ -21,17 +23,19 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   // ...
-
   gameState.players.push(socket);
   socket.emit("gameState", gameState);
 
   socket.on('player join', ( { name, room }, callback) => {
-    gameState.players.push({ id: socket.id, name, room });
-    socket.join(room);
-    io.emit('gameState', gameState);
+    const { user, error } = addUser(socket.id, name, room);
+    if (error) return callback(error);
+    //gameState.players.push({ id: socket.id, name, room });
+    socket.join(user.room);
+    socket.in(room).emit('notification', { title: 'Someone\'s here', description: `${user.name} just entered the room`});
+    io.in(room).emit('users', getUsers(room));
+    //io.emit('gameState', gameState);
     callback();
   });
-
 
   socket.on('game start', () => {
     gameState.state = 'playing';
