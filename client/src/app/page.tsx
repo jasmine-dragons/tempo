@@ -6,14 +6,16 @@ import Link from "next/link";
 import { useState } from "react";
 import { createGame, joinGame } from "@/api";
 import { useRouter } from "next/navigation";
+import Hero from "@/components/Hero";
 
 export default function Home() {
   const [code, setCode] = useState<string>("");
+  const [user, setUser] = useState<string>("");
   const router = useRouter();
 
   const onCreate = async () => {
     try {
-      const gameSession = await createGame("alex");
+      const gameSession = await createGame(user);
       router.push(`/game/${gameSession.sessionId}`);
     } catch (e) {
       console.error(e);
@@ -22,7 +24,7 @@ export default function Home() {
 
   const onJoin = async () => {
     try {
-      const gameSession = await joinGame(code, "alex");
+      const gameSession = await joinGame(code, user);
       router.push(`/game/${gameSession.sessionId}`);
     } catch (e) {
       console.error(e);
@@ -33,7 +35,7 @@ export default function Home() {
     <main>
       <div className={styles.container}>
         <div className={styles.logo}>
-          <Image src="/logo.svg" width={500} height={350} alt="tempo logo." />
+          <Hero user={user} onChange={(e) => setUser(e.target.value)}/>
         </div>
         <div className={styles.options}>
           <button
