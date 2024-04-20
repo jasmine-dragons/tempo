@@ -10,5 +10,5 @@ export type GameSession = {
   sessionId: string;
   updatedAt: string;
   users: string[];
-  _id: string[]
-}
+  _id: string[];
+};

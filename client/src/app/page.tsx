@@ -13,21 +13,21 @@ export default function Home() {
 
   const onCreate = async () => {
     try {
-      const gameSession = await createGame('alex')
-      router.push(`/game/${gameSession.sessionId}`)
+      const gameSession = await createGame("alex");
+      router.push(`/game/${gameSession.sessionId}`);
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   const onJoin = async () => {
     try {
-      const gameSession = await joinGame(code, 'alex')
-      router.push(`/game/${gameSession.sessionId}`)
+      const gameSession = await joinGame(code, "alex");
+      router.push(`/game/${gameSession.sessionId}`);
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   return (
     <main>
@@ -36,7 +36,11 @@ export default function Home() {
           <Image src="/logo.svg" width={500} height={350} alt="tempo logo." />
         </div>
         <div className={styles.options}>
-          <button type="button" onClick={onCreate} className={`${styles.option} ${styles.button}`}>
+          <button
+            type="button"
+            onClick={onCreate}
+            className={`${styles.option} ${styles.button}`}
+          >
             <Typography variant="body">create a room.</Typography>
           </button>
           <div className={styles.option}>

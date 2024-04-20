@@ -1,7 +1,7 @@
-import styles from './style.module.scss'
+import styles from "./style.module.scss";
 
 const Loading = () => {
-    return <div className={styles.loading} />
-}
+  return <div className={styles.loading} />;
+};
 
-export default Loading
+export default Loading;
