@@ -10,12 +10,31 @@ import { Server } from "socket.io";
 const server = createServer(app);
 const port = process.env.PORT || 8000;
 
+const gameState = {
+  state: 'waiting',
+  players: [],
+};
+
 const io = new Server(server, {
   // options
 });
 
 io.on("connection", (socket) => {
   // ...
+
+  gameState.players.push(socket);
+  socket.emit("gameState", gameState);
+
+
+  socket.on('game start', () => {
+    gameState.state = 'playing';
+    io.emit('gameState', gameState);
+  });
+
+  socket.on('judging', () => {
+    gameState.state = 'judging';
+    io.emit('gameState', gameState);
+  });
   console.log("connection started!");
 });
 
