@@ -25,6 +25,13 @@ io.on("connection", (socket) => {
   gameState.players.push(socket);
   socket.emit("gameState", gameState);
 
+  socket.on('player join', ( { name, room }, callback) => {
+    gameState.players.push({ id: socket.id, name, room });
+    socket.join(room);
+    io.emit('gameState', gameState);
+    callback();
+  });
+
 
   socket.on('game start', () => {
     gameState.state = 'playing';
@@ -35,6 +42,12 @@ io.on("connection", (socket) => {
     gameState.state = 'judging';
     io.emit('gameState', gameState);
   });
+
+  socket.on("disconnect", () => {
+    gameState.players = gameState.players.filter((player) => player.id !== socket.id);
+    io.emit("gameState", gameState);
+  });
+
   console.log("connection started!");
 });
 
