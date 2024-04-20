@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const GameSessionSchema = mongoose.Schema(
     {
         sessionId: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true
+            type: String,
+            required: true,
+            unique: true
         },
         gameLeader: {
             type: String,
@@ -22,4 +23,4 @@ const GameSessionSchema = mongoose.Schema(
 
 const GameSession = mongoose.model('GameSession', GameSessionSchema);
 
-module.exports = { GameSession };
+module.exports = {GameSession};
