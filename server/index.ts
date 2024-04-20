@@ -13,7 +13,13 @@ const io = new Server(server, {
   // options
 });
 
-io.on("connection", (socket) => {});
+io.on("connection", (socket) => {
+  console.log("connection started!");
+  socket.emit("connection");
+  socket.on("howdy", (data) => {
+    console.log(data);
+  });
+});
 
 dotenv.config();
 
