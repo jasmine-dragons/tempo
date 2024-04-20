@@ -35,7 +35,7 @@ export default function Home() {
     <main>
       <div className={styles.container}>
         <div className={styles.logo}>
-          <Hero user={user} onChange={(e) => setUser(e.target.value)}/>
+          <Hero user={user} onChange={(e) => setUser(e.target.value)} />
         </div>
         <div className={styles.options}>
           <button
