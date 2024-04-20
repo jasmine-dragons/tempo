@@ -24,7 +24,7 @@ export default function Game() {
   return (
     <main>
       <div className={styles.container}>
-        <PlayersDisplay players={PLAYERS} waiting/>
+        <PlayersDisplay players={PLAYERS} waiting />
       </div>
     </main>
   );
