@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const express = require("express");
 const app = express();
+const cors = require('cors')
 import router from "./api";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -26,6 +27,7 @@ mongoose.connect(process.env.DB_URL).then(() => {
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors())
 
 app.use("/", router);
 

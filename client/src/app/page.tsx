@@ -3,11 +3,31 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Typography from "@/components/Typography";
 import Link from "next/link";
-import Logo from "@/public/logo.svg";
 import { useState } from "react";
+import { createGame, joinGame } from "@/api";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [code, setCode] = useState<string>("");
+  const router = useRouter();
+
+  const onCreate = async () => {
+    try {
+      const gameSession = await createGame('alex')
+      router.push(`/game/${gameSession.sessionId}`)
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  const onJoin = async () => {
+    try {
+      const gameSession = await joinGame(code, 'alex')
+      router.push(`/game/${gameSession.sessionId}`)
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <main>
@@ -16,13 +36,13 @@ export default function Home() {
           <Image src="/logo.svg" width={500} height={350} alt="tempo logo." />
         </div>
         <div className={styles.options}>
-          <Link href="/game" className={styles.option}>
+          <button type="button" onClick={onCreate} className={`${styles.option} ${styles.button}`}>
             <Typography variant="body">create a room.</Typography>
-          </Link>
+          </button>
           <div className={styles.option}>
-            <Link href={`/game/${code}`}>
+            <button type="button" onClick={onJoin} className={styles.button}>
               <Typography variant="body">join a room.</Typography>
-            </Link>
+            </button>
             <label className={styles.joinLabel}>
               code:
               <input

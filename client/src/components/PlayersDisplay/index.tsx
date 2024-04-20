@@ -9,17 +9,6 @@ interface PlayersDisplayProps {
 }
 
 const PlayersDisplay = ({ players, waiting }: PlayersDisplayProps) => {
-    console.log(Array(4 - players.length)
-    .fill((<div key={`Empty`} className={styles.playerCard}>
-        <Image
-          src='/players/0.svg'
-          width={75}
-          height={75}
-          alt={"Space available."}
-        />
-        <Typography variant="subheader">available.</Typography>
-      </div>
-    )))
   return (
     <div className={styles.container}>
       <Typography variant="subheader" className={styles.header} bold>{`players.`}</Typography>
