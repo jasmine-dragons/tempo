@@ -22,17 +22,12 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  color-scheme: dark;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
 
 main {
