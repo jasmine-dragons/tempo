@@ -1,6 +1,13 @@
 @use "src/styles/vars.scss" as vars;
 
+
 .container {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 5rem;
+    align-items: center;
+}
+.music {
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 1rem;
