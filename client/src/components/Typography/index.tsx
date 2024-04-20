@@ -3,7 +3,7 @@ import styles from "./style.module.scss";
 
 interface TypographyProps {
   children: ReactNode;
-  variant: "header" | "body" | "label";
+  variant: "header" | "subheader" | "body" | "label";
   bold?: boolean;
   className?: string;
 }
@@ -18,6 +18,8 @@ const Typography = ({
     switch (variant) {
       case "header":
         return styles.header;
+      case "subheader":
+        return styles.subheader;
       case "body":
         return styles.body;
       case "label":
