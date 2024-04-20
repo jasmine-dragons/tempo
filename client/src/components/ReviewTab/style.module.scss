@@ -1,0 +1,20 @@
+@use "src/styles/vars.scss" as vars;
+
+.container {
+    display: grid;
+    grid-template-columns: 30% auto;
+
+    .tabNav {
+        // background-color: red;
+    }
+
+    .audio {
+        background-color: blue;
+        margin: 1rem auto;
+        padding: 1rem;
+    }
+
+    .tabContent {
+        padding: 1rem;
+    }
+}
