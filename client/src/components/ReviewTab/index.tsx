@@ -5,6 +5,7 @@ import Link from "next/link";
 import PlayersDisplay from "../PlayersDisplay";
 import { Player } from "../../types";
 import { Content, GoogleGenerativeAI } from "@google/generative-ai";
+import SubmissionSummary from "../SubmissionSummary";
 
 const Prompt = (blob: Blob): Content[] => {
   return [
@@ -25,15 +26,20 @@ const Prompt = (blob: Blob): Content[] => {
   ];
 };
 
-interface ReviewTabProps {
-  players: Player[];
-  submissions: {
-    user: string;
-    blob: Blob;
-  }[];
+interface Submission {
+  user: string;
+  blob: {
+    type: string;
+    data: ArrayBuffer;
+  };
 }
 
-type AugmentedPlayer = Player & { submissions: { user: string; blob: Blob }[] };
+interface ReviewTabProps {
+  players: Player[];
+  submissions: Submission[];
+}
+
+export type AugmentedPlayer = Player & { submissions: Submission[] };
 
 const ReviewTab = ({ players, submissions }: ReviewTabProps) => {
   const augmentedPlayers = players.map(
@@ -64,15 +70,19 @@ const ReviewTab = ({ players, submissions }: ReviewTabProps) => {
     [],
   );
 
-  async function rateAudio(player: AugmentedPlayer) {
+  async function rateAudio(player: AugmentedPlayer): Promise<string> {
+    if (reviews.has(player.name)) {
+      return reviews.get(player.name) || "";
+    }
     if (player.submissions.length === 0) {
-      return;
+      return "";
     } else {
       const { response } = await model.generateContent({
-        contents: Prompt(player.submissions[0].blob),
+        contents: Prompt(new Blob([player.submissions[0].blob.data])),
       });
       const text = response.text();
       setReviews((map) => new Map(map.set(player.name, text)));
+      return text;
     }
   }
 
@@ -84,29 +94,34 @@ const ReviewTab = ({ players, submissions }: ReviewTabProps) => {
     }
   };
 
+  console.log(activePlayer.submissions[0]);
   return (
     <div className={styles.bigContainer}>
-    <Link href="/" style={{ width: "fit-content" }}>
-          <Typography variant="body" className={styles.back} bold>
-            {"go back."}
-          </Typography>
-        </Link>
-    <div className={styles.container}>
-      <PlayersDisplay players={players} onPlayerClick={handlePlayerClick} />
-      <div className={styles.tabContent}>
-        <Typography variant="subheader" bold className={styles.subheader}>
-          {activePlayer.name}'s tempo.
+      <Link href="/" style={{ width: "fit-content" }}>
+        <Typography variant="body" className={styles.back} bold>
+          {"go back."}
         </Typography>
-        {activePlayer.submissions.length > 0 ? (
-          <Typography variant="body" className={styles.subheader}>
-          {JSON.stringify(activePlayer.submissions)}</Typography>
-        ) : (
-          <Typography variant="body" className={styles.subheader}>
-            No submissions found for {activePlayer.name} :(
+      </Link>
+      <div className={styles.container}>
+        <PlayersDisplay players={players} onPlayerClick={handlePlayerClick} />
+        <div className={styles.tabContent}>
+          <Typography variant="subheader" bold className={styles.subheader}>
+            {activePlayer.name}'s tempo.
           </Typography>
-        )}
+          {activePlayer.submissions.length > 0 ? (
+            <SubmissionSummary
+              submission={activePlayer.submissions[0]}
+              rateAudio={rateAudio}
+              player={activePlayer}
+            />
+          ) : (
+            <Typography variant="body" className={styles.subheader}>
+              No submissions found for {activePlayer.name} :(
+            </Typography>
+          )}
+        </div>
       </div>
-    </div></div>
+    </div>
   );
 };
 

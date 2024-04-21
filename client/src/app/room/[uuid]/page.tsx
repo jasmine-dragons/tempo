@@ -40,13 +40,15 @@ export default function WaitingRoomPage({ params }: WaitingRoomPageProps) {
 
   useEffect(() => {
     const sock = initializeSocket();
-    const user = searchParams.get('user');
-    let query = ''
+    const user = searchParams.get("user");
+    let query = "";
     if (user) {
-      query = `?${new URLSearchParams({ user }).toString()}`
+      query = `?${new URLSearchParams({ user }).toString()}`;
     }
     sock.on("users", () => fetchGame());
-    sock.on("startGameState", () => router.push(`/game/${params.uuid}${query}`));
+    sock.on("startGameState", () =>
+      router.push(`/game/${params.uuid}${query}`),
+    );
     socket.current = sock;
   }, []);
 

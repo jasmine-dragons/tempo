@@ -1,6 +1,7 @@
 import {
   FormEvent,
   FormEventHandler,
+  MutableRefObject,
   useEffect,
   useMemo,
   useRef,
@@ -72,23 +73,19 @@ const LoadingRow = ({ prompt }: { prompt: string }) => {
 };
 
 interface PlayRowProps {
-  file: Blob | null;
+  blobRef: MutableRefObject<Blob | null>;
   stop: boolean;
   restart: boolean;
   prompt: string;
   clearTrack: () => void;
-  addBlob: (b: Blob) => void;
-  collect: boolean;
 }
 
 const PlayRow = ({
-  file,
+  blobRef,
   stop,
   restart,
   prompt,
   clearTrack,
-  addBlob,
-  collect,
 }: PlayRowProps) => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(100);
@@ -96,8 +93,8 @@ const PlayRow = ({
   const restartMount = useRef<boolean>(false);
 
   const audio = useMemo(() => {
-    if (file !== null) {
-      const url = window.URL.createObjectURL(file);
+    if (blobRef.current !== null) {
+      const url = window.URL.createObjectURL(blobRef.current);
       const a = new Audio(url);
       a.onended = () => setPlaying(false);
       return a;
@@ -128,13 +125,6 @@ const PlayRow = ({
       audio.volume = volume / 100;
     }
   }, [volume]);
-
-  useEffect(() => {
-    if (collect && file !== null) {
-      console.log("HEY BLOB BEING COLLECTED")
-      addBlob(file);
-    }
-  }, [collect]);
 
   return (
     <div className={styles.playRow}>
@@ -195,38 +185,36 @@ const PlayRow = ({
 interface GenerativeAudioProps {
   stop: boolean;
   restart: boolean;
-  addBlob: (b: Blob) => void;
-  collect: boolean;
+  blobRef: MutableRefObject<Blob | null>;
 }
 
-const GenerativeAudio = ({
-  stop,
-  restart,
-  addBlob,
-  collect,
-}: GenerativeAudioProps) => {
+const GenerativeAudio = ({ stop, restart, blobRef }: GenerativeAudioProps) => {
   const [prompt, setPrompt] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [file, setFile] = useState<Blob | null>(null);
 
   let state: State = "blank";
   if (loading) {
     state = "loading";
-  } else if (file !== null) {
+  } else if (blobRef.current !== null) {
     state = "complete";
   }
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setLoading(true);
-    generateMusic(() => {}, prompt, 0, 10)
-      .then(setFile)
-      .finally(() => setLoading(false));
+
+    try {
+      const blob = await generateMusic(() => {}, prompt, 0, 10);
+      blobRef.current = blob;
+    } catch (e) {
+      console.error(e);
+    }
+    setLoading(false);
   };
 
   const clearTrack = () => {
     setPrompt("");
-    setFile(null);
+    blobRef.current = null;
     setLoading(false);
   };
 
@@ -251,13 +239,11 @@ const GenerativeAudio = ({
       return (
         <div className={styles.container}>
           <PlayRow
-            file={file}
+            blobRef={blobRef}
             stop={stop}
             restart={restart}
             prompt={prompt}
             clearTrack={clearTrack}
-            addBlob={addBlob}
-            collect={collect}
           />
         </div>
       );

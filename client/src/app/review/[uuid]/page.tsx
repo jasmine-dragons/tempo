@@ -16,7 +16,7 @@ interface ReviewPageProps {
 export default function ReviewPage({ params }: ReviewPageProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [game, setGame] = useState<GameSession | null>(null);
-  console.log(game)
+  console.log(game);
 
   const fetchGame = () =>
     getGame(params.uuid)
