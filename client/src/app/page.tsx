@@ -16,23 +16,23 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const name = localStorage.getItem('tempo-name')
+    const name = localStorage.getItem("tempo-name");
 
-    console.log("Hey, ", name || '')
+    console.log("Hey, ", name || "");
     if (name !== null) {
       setUser(name);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (user !== '') {
-      localStorage.setItem('tempo-name', user);
+    if (user !== "") {
+      localStorage.setItem("tempo-name", user);
     }
-  }, [user])
+  }, [user]);
 
   const onCreate = async () => {
-    if (user === '') {
-      showToast('set a user name first.');
+    if (user === "") {
+      showToast("set a user name first.");
       return;
     }
     try {
@@ -40,6 +40,7 @@ export default function Home() {
       socket.on("connect", () => {
         console.log("connected");
       });
+      localStorage.setItem("tempo-leader", user);
       const gameSession = await createGame(user);
       socket.emit("player join", { name: user, room: gameSession.sessionId });
       router.push(`/game/${gameSession.sessionId}`);
@@ -49,13 +50,13 @@ export default function Home() {
   };
 
   const onJoin = async () => {
-    if (user === '') {
-      showToast('set a user name first.');
+    if (user === "") {
+      showToast("set a user name first.");
       return;
     }
 
-    if (code === '') {
-      showToast('fill out the room code first.');
+    if (code === "") {
+      showToast("fill out the room code first.");
       return;
     }
     try {

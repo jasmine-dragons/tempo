@@ -6,9 +6,10 @@ import Image from "next/image";
 interface PlayersDisplayProps {
   players: Player[];
   waiting?: boolean;
+  onPlayerClick: (playerName: string) => void;
 }
 
-const PlayersDisplay = ({ players, waiting }: PlayersDisplayProps) => {
+const PlayersDisplay = ({ players, waiting, onPlayerClick }: PlayersDisplayProps) => {
   return (
     <div className={styles.container}>
       <Typography
@@ -17,7 +18,7 @@ const PlayersDisplay = ({ players, waiting }: PlayersDisplayProps) => {
         bold
       >{`players.`}</Typography>
       {players.map((player, i) => (
-        <div key={player.uuid} className={styles.playerCard}>
+        <div key={player.uuid} className={styles.playerCard} onClick={() => onPlayerClick(player.name)}>
           <div className={styles.playerInfo}>
             <Image
               src={`/players/${i}.svg`}
