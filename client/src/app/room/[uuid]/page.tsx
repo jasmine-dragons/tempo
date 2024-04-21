@@ -9,7 +9,7 @@ import styles from "./page.module.scss";
 import Typography from "@/components/Typography";
 import Link from "next/link";
 import { initializeSocket } from "@/utils/socket";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Socket } from "socket.io-client";
 
 interface WaitingRoomPageProps {
@@ -22,8 +22,9 @@ export default function WaitingRoomPage({ params }: WaitingRoomPageProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [game, setGame] = useState<GameSession | null>(null);
   const socket = useRef<Socket | null>(null);
-  const router = useRouter()
-  
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const fetchGame = () =>
     getGame(params.uuid)
       .then((g) => {
@@ -35,12 +36,17 @@ export default function WaitingRoomPage({ params }: WaitingRoomPageProps) {
     if (socket.current !== null) {
       socket.current.emit("game start");
     }
-  }
+  };
 
   useEffect(() => {
     const sock = initializeSocket();
+    const user = searchParams.get('user');
+    let query = ''
+    if (user) {
+      query = `?${new URLSearchParams({ user }).toString()}`
+    }
     sock.on("users", () => fetchGame());
-    sock.on('startGameState', () => router.push(`/game/${params.uuid}`))
+    sock.on("startGameState", () => router.push(`/game/${params.uuid}${query}`));
     socket.current = sock;
   }, []);
 
@@ -87,7 +93,7 @@ export default function WaitingRoomPage({ params }: WaitingRoomPageProps) {
         </Link>
         <div className={styles.container}>
           <PlayersDisplay players={players} waiting onPlayerClick={() => {}} />
-          <InfoDisplay startGame={startGame}/>
+          <InfoDisplay startGame={startGame} />
         </div>
       </div>
     </main>

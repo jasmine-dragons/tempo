@@ -3,10 +3,10 @@ import Typography from "../Typography";
 import Link from "next/link";
 
 interface InfoDisplayProps {
-  startGame: () => void
+  startGame: () => void;
 }
 
-const InfoDisplay = ({startGame}: InfoDisplayProps) => {
+const InfoDisplay = ({ startGame }: InfoDisplayProps) => {
   return (
     <div className={styles.container}>
       <Typography variant="subheader" bold>{`how to play.`}</Typography>

@@ -23,11 +23,11 @@ export type Blobs = {
 interface StudioProps {
   user?: string;
   uuid?: string;
-  timer?: number
+  timer?: number;
   socket?: Socket;
 }
 
-const Studio = ({user, uuid, timer, socket}: StudioProps) => {
+const Studio = ({ user, uuid, timer, socket }: StudioProps) => {
   const [stop, setStop] = useState<boolean>(false);
   const [restart, setRestart] = useState<boolean>(false);
   const [blobs, setBlobs] = useState<Blobs>({});
@@ -44,27 +44,32 @@ const Studio = ({user, uuid, timer, socket}: StudioProps) => {
   const collectBlobs = async (): Promise<Blob> => {
     setCollect(true);
     setCollect(false);
+    await new Promise(r => setTimeout(r, 2000));
     const validBlobs = [blobs.one, blobs.two, blobs.three, blobs.four].filter(
       (i) => i !== undefined,
-    ) as Blob[]
-    if (validBlobs.length > 0)  {
-      const blob = await mergeIntoBlob(validBlobs)
-      return blob
-    } else {
+    ) as Blob[];
+    if (validBlobs.length === 0) {
       return new Blob();
+    } else if (validBlobs.length === 1) {
+      return validBlobs[0];
+    } else {
+      const blob = mergeIntoBlob(validBlobs);
+      return blob;
     }
   };
 
+  const submit = async () => {
+    const blob = await collectBlobs();
+    console.log(blob)
+    await submitGame(user || "", uuid || "", blob);
+    socket?.emit("judging");
+  };
+
   useEffect(() => {
-    const submit = async () => {
-      if (timer === 0) {
-        const blob = await collectBlobs()
-        await submitGame(user || '', uuid || '', blob)
-        socket?.emit('judging')
-      }
+    if (timer === 0) {
+      submit();
     }
-    submit();
-  }, [timer])
+  }, [timer]);
 
   return (
     <div className={styles.container}>
@@ -96,6 +101,7 @@ const Studio = ({user, uuid, timer, socket}: StudioProps) => {
         />
         <div className={styles.buttons}>
           <button
+            type="button"
             onClick={() => setRestart((r) => !r)}
             className={styles.button}
           >
@@ -103,9 +109,14 @@ const Studio = ({user, uuid, timer, socket}: StudioProps) => {
               replay all tracks.
             </Typography>
           </button>
-          <button onClick={() => setStop((r) => !r)} className={styles.button}>
+          <button type="button" onClick={() => setStop((r) => !r)} className={styles.button}>
             <Typography variant="body" bold>
               stop all tracks.
+            </Typography>
+          </button>
+          <button type="button" onClick={submit} className={styles.button}>
+            <Typography variant="body" bold>
+              Done
             </Typography>
           </button>
         </div>

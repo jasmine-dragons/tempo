@@ -10,5 +10,9 @@ export type GameSession = {
   sessionId: string;
   updatedAt: string;
   users: string[];
+  submissions: {
+    blob: Blob;
+    user: string;
+  }[];
   _id: string[];
 };

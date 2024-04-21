@@ -1,12 +1,11 @@
 "use client";
 import { getGame, submitGame } from "@/api";
-import InfoDisplay from "@/components/InfoDisplay";
 import Loading from "@/components/Loading";
-import PlayersDisplay from "@/components/PlayersDisplay";
 import { GameSession, Player } from "@/types";
 import { useState, useEffect } from "react";
 import styles from "./page.module.scss";
-import ReviewTab from "../../../components/ReviewTab";
+import ReviewTab from "@/components/ReviewTab";
+import { initializeSocket } from "@/utils/socket";
 
 interface ReviewPageProps {
   params: {
@@ -17,14 +16,23 @@ interface ReviewPageProps {
 export default function ReviewPage({ params }: ReviewPageProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [game, setGame] = useState<GameSession | null>(null);
+  console.log(game)
 
-  useEffect(() => {
+  const fetchGame = () =>
     getGame(params.uuid)
       .then((g) => {
         console.log(g);
         setGame(g);
       })
       .finally(() => setLoading(false));
+
+  useEffect(() => {
+    const socket = initializeSocket();
+    socket.on("endGameState", fetchGame);
+  }, []);
+
+  useEffect(() => {
+    fetchGame();
   }, [params.uuid]);
 
   if (loading) {
@@ -46,7 +54,7 @@ export default function ReviewPage({ params }: ReviewPageProps) {
   return (
     <main>
       <div className={styles.container}>
-        <ReviewTab players={players} />
+        <ReviewTab players={players} submissions={game.submissions} />
       </div>
     </main>
   );

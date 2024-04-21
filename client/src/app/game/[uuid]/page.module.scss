@@ -7,21 +7,21 @@
 }
 
 .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 
-    .timer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 6.5rem;
-        border: 0.25rem solid vars.$white;
-        aspect-ratio: 1;
-        padding: 1rem;
-        border-radius: 100%;
-        background-color: vars.$red;
-    }
+  .timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 6.5rem;
+    border: 0.25rem solid vars.$white;
+    aspect-ratio: 1;
+    padding: 1rem;
+    border-radius: 100%;
+    background-color: vars.$red;
+  }
 }
 
 .back {

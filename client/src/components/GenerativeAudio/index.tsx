@@ -131,6 +131,7 @@ const PlayRow = ({
 
   useEffect(() => {
     if (collect && file !== null) {
+      console.log("HEY BLOB BEING COLLECTED")
       addBlob(file);
     }
   }, [collect]);
@@ -207,7 +208,6 @@ const GenerativeAudio = ({
   const [prompt, setPrompt] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [file, setFile] = useState<Blob | null>(null);
-  const progress = useRef<number>(5);
 
   let state: State = "blank";
   if (loading) {
