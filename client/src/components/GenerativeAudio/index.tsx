@@ -71,19 +71,25 @@ const LoadingRow = ({ prompt }: { prompt: string }) => {
   );
 };
 
+interface PlayRowProps {
+  file: Blob | null;
+  stop: boolean;
+  restart: boolean;
+  prompt: string;
+  clearTrack: () => void;
+  addBlob: (b: Blob) => void;
+  collect: boolean;
+}
+
 const PlayRow = ({
   file,
   stop,
   restart,
   prompt,
   clearTrack,
-}: {
-  file: Blob | null;
-  stop: boolean;
-  restart: boolean;
-  prompt: string;
-  clearTrack: () => void;
-}) => {
+  addBlob,
+  collect,
+}: PlayRowProps) => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(100);
   const stopMount = useRef<boolean>(false);
@@ -122,6 +128,12 @@ const PlayRow = ({
       audio.volume = volume / 100;
     }
   }, [volume]);
+
+  useEffect(() => {
+    if (collect && file !== null) {
+      addBlob(file);
+    }
+  }, [collect]);
 
   return (
     <div className={styles.playRow}>
@@ -182,9 +194,16 @@ const PlayRow = ({
 interface GenerativeAudioProps {
   stop: boolean;
   restart: boolean;
+  addBlob: (b: Blob) => void;
+  collect: boolean;
 }
 
-const GenerativeAudio = ({ stop, restart }: GenerativeAudioProps) => {
+const GenerativeAudio = ({
+  stop,
+  restart,
+  addBlob,
+  collect,
+}: GenerativeAudioProps) => {
   const [prompt, setPrompt] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [file, setFile] = useState<Blob | null>(null);
@@ -237,6 +256,8 @@ const GenerativeAudio = ({ stop, restart }: GenerativeAudioProps) => {
             restart={restart}
             prompt={prompt}
             clearTrack={clearTrack}
+            addBlob={addBlob}
+            collect={collect}
           />
         </div>
       );

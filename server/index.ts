@@ -33,19 +33,20 @@ io.on("connect", (socket) => {
     if (error) return;
     console.log(`User ${user.name} joined room ${user.room}. Socket ID: ${socket.id}`);
     socket.join(user.room);
-    socket
-      .in(room)
+    io.sockets
       .emit("notification", {
         title: "Someone's here",
         description: `${user.name} just entered the room`,
       });
-    io.in(room).emit("users", getUsers(room));
+
+    console.log("player join", name)
+    io.sockets.emit("users", getUsers(room));
     //io.emit('gameState', gameState);
   });
 
   socket.on("game start", () => {
     gameState.state = "playing";
-    // io.emit('gameState', gameState);
+    io.sockets.emit('gameState', 'playing');
   });
 
   socket.on("judging", () => {

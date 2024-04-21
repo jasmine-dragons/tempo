@@ -8,24 +8,37 @@ import { useState, useEffect } from "react";
 import styles from "./page.module.scss";
 import Typography from "@/components/Typography";
 import Link from "next/link";
+import { initializeSocket } from "@/utils/socket";
+import { useRouter } from "next/navigation";
 
-interface GamePageProps {
+interface WaitingRoomPageProps {
   params: {
     uuid: string;
   };
 }
 
-export default function GamePage({ params }: GamePageProps) {
+export default function WaitingRoomPage({ params }: WaitingRoomPageProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [game, setGame] = useState<GameSession | null>(null);
-
-  useEffect(() => {
+  const router = useRouter()
+  
+  const fetchGame = () =>
     getGame(params.uuid)
       .then((g) => {
-        console.log(g);
         setGame(g);
       })
       .finally(() => setLoading(false));
+
+  useEffect(() => {
+    const socket = initializeSocket();
+
+    socket.on("users", () => fetchGame());
+
+    socket.on('game start', () => router.push(`/game/${params.uuid}`))
+  }, []);
+
+  useEffect(() => {
+    fetchGame();
   }, [params.uuid]);
 
   if (loading) {

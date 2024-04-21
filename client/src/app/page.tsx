@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import Hero from "@/components/Hero";
 import { io } from "socket.io-client";
 import showToast from "@/components/showToast";
+import { initializeSocket } from "@/utils/socket";
 
 export default function Home() {
   const [code, setCode] = useState<string>("");
@@ -17,8 +18,6 @@ export default function Home() {
 
   useEffect(() => {
     const name = localStorage.getItem("tempo-name");
-
-    console.log("Hey, ", name || "");
     if (name !== null) {
       setUser(name);
     }
@@ -36,7 +35,7 @@ export default function Home() {
       return;
     }
     try {
-      const socket = io("ws://localhost:8000", { reconnectionDelay: 1000 });
+      const socket = initializeSocket();
       socket.on("connect", () => {
         console.log("connected");
       });
@@ -64,7 +63,7 @@ export default function Home() {
       return;
     }
     try {
-      const socket = io("ws://localhost:8000", { reconnectionDelay: 1000 });
+      const socket = initializeSocket();
       const gameSession = await joinGame(code, user);
       socket.emit("player join", { name: user, room: gameSession.sessionId });
       socket.on('notification', (notification) => {
