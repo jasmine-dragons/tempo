@@ -26,12 +26,11 @@ const io = new Server(server, {
 
 io.on("connect", (socket) => {
   // ...
-  gameState.players.push(socket);
 
   socket.on("player join", ({ name, room }) => {
     const { user, error } = addUser(socket.id, name, room);
     if (error) return;
-    //gameState.players.push({ id: socket.id, name, room });
+    console.log(`User ${user.name} joined room ${user.room}. Socket ID: ${socket.id}`);
     socket.join(user.room);
     socket
       .in(room)
