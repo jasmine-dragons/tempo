@@ -153,7 +153,7 @@ const PlayRow = ({
         >
           <Image
             src={
-              !playing || audio?.ended ? "icons/play.svg" : "/icons/pause.svg"
+              !playing || audio?.ended ? "/icons/play.svg" : "/icons/pause.svg"
             }
             width={40}
             height={40}

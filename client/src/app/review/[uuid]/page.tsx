@@ -1,5 +1,5 @@
 "use client";
-import { getGame } from "@/api";
+import { getGame, submitGame } from "@/api";
 import InfoDisplay from "@/components/InfoDisplay";
 import Loading from "@/components/Loading";
 import PlayersDisplay from "@/components/PlayersDisplay";

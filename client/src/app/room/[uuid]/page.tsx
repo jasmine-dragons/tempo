@@ -4,12 +4,13 @@ import InfoDisplay from "@/components/InfoDisplay";
 import Loading from "@/components/Loading";
 import PlayersDisplay from "@/components/PlayersDisplay";
 import { GameSession, Player } from "@/types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./page.module.scss";
 import Typography from "@/components/Typography";
 import Link from "next/link";
 import { initializeSocket } from "@/utils/socket";
 import { useRouter } from "next/navigation";
+import { Socket } from "socket.io-client";
 
 interface WaitingRoomPageProps {
   params: {
@@ -20,6 +21,7 @@ interface WaitingRoomPageProps {
 export default function WaitingRoomPage({ params }: WaitingRoomPageProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [game, setGame] = useState<GameSession | null>(null);
+  const socket = useRef<Socket | null>(null);
   const router = useRouter()
   
   const fetchGame = () =>
@@ -29,12 +31,17 @@ export default function WaitingRoomPage({ params }: WaitingRoomPageProps) {
       })
       .finally(() => setLoading(false));
 
+  const startGame = () => {
+    if (socket.current !== null) {
+      socket.current.emit("game start");
+    }
+  }
+
   useEffect(() => {
-    const socket = initializeSocket();
-
-    socket.on("users", () => fetchGame());
-
-    socket.on('game start', () => router.push(`/game/${params.uuid}`))
+    const sock = initializeSocket();
+    sock.on("users", () => fetchGame());
+    sock.on('startGameState', () => router.push(`/game/${params.uuid}`))
+    socket.current = sock;
   }, []);
 
   useEffect(() => {
@@ -80,7 +87,7 @@ export default function WaitingRoomPage({ params }: WaitingRoomPageProps) {
         </Link>
         <div className={styles.container}>
           <PlayersDisplay players={players} waiting onPlayerClick={() => {}} />
-          <InfoDisplay />
+          <InfoDisplay startGame={startGame}/>
         </div>
       </div>
     </main>

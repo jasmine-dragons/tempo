@@ -36,3 +36,16 @@ export async function createGame(user: string): Promise<GameSession> {
   const { game } = await response.json();
   return game as GameSession;
 }
+
+export async function submitGame(user: string, uuid: string, submission: Blob) {
+  const response = await fetch(`${API_URL}/game/${uuid}/submit?${new URLSearchParams({user}).toString()}`, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "multipart/form-data"
+    },
+    body: submission
+  })
+
+  console.log(response);
+}

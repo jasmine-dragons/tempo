@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GenerativeAudio from "../GenerativeAudio";
 import styles from "./style.module.scss";
 import Typography from "../Typography";
 import AnimatedLogo from "../AnimatedLogo";
 import { mergeIntoBlob } from "@/utils/crunker";
+import { submitGame } from "@/api";
+import { Socket } from "socket.io-client";
 
 export interface AudioProps {
   prompt: string;
@@ -18,7 +20,14 @@ export type Blobs = {
   four?: Blob;
 };
 
-const Studio = () => {
+interface StudioProps {
+  user?: string;
+  uuid?: string;
+  timer?: number
+  socket?: Socket;
+}
+
+const Studio = ({user, uuid, timer, socket}: StudioProps) => {
   const [stop, setStop] = useState<boolean>(false);
   const [restart, setRestart] = useState<boolean>(false);
   const [blobs, setBlobs] = useState<Blobs>({});
@@ -32,15 +41,30 @@ const Studio = () => {
     });
   };
 
-  const collectBlobs = () => {
+  const collectBlobs = async (): Promise<Blob> => {
     setCollect(true);
     setCollect(false);
-    mergeIntoBlob(
-      [blobs.one, blobs.two, blobs.three, blobs.four].filter(
-        (i) => i !== undefined,
-      ) as Blob[],
-    );
+    const validBlobs = [blobs.one, blobs.two, blobs.three, blobs.four].filter(
+      (i) => i !== undefined,
+    ) as Blob[]
+    if (validBlobs.length > 0)  {
+      const blob = await mergeIntoBlob(validBlobs)
+      return blob
+    } else {
+      return new Blob();
+    }
   };
+
+  useEffect(() => {
+    const submit = async () => {
+      if (timer === 0) {
+        const blob = await collectBlobs()
+        await submitGame(user || '', uuid || '', blob)
+        socket?.emit('judging')
+      }
+    }
+    submit();
+  }, [timer])
 
   return (
     <div className={styles.container}>
