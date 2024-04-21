@@ -2,7 +2,7 @@
 
 .container {
   padding: 1rem;
-  background: linear-gradient(97deg, #1E2948 30.81%, #2A3A65 127.93%);
+  background: linear-gradient(97deg, #1e2948 30.81%, #2a3a65 127.93%);
   border-radius: 1rem;
   display: flex;
   flex-direction: row;
@@ -20,6 +20,18 @@
 
     &:focus {
       outline: 0;
+    }
+  }
+
+  .options {
+    display: flex;
+    flex-direction: row;
+    display: none;
+  }
+
+  &:hover {
+    .options {
+      display: flex;
     }
   }
 }
@@ -42,4 +54,49 @@
 .prompt {
   font-size: 1.5rem !important;
   line-height: 2rem !important;
+}
+
+.playRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.playRowLeft {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+.volume {
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  position: relative;
+
+  .volumeSlider {
+    position: absolute;
+    transform: rotate(270deg);
+    padding: 4rem;
+    top: -4rem;
+    left: -2rem;
+    display: none;
+
+    .volumeOutline {
+      background-color: vars.$navy;
+      padding: 1rem;
+      border-radius: 2rem;
+      outline: 4px solid vars.$white;
+    }
+  }
+
+  &:hover {
+    .volumeSlider {
+      display: flex;
+    }
+  }
 }

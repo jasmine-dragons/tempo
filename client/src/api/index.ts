@@ -10,7 +10,7 @@ export async function getGame(uuid: string): Promise<GameSession> {
 
 export async function joinGame(
   uuid: string,
-  user: string
+  user: string,
 ): Promise<GameSession> {
   const response = await fetch(`${API_URL}/game/${uuid}/join`, {
     method: "POST",

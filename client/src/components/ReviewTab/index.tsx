@@ -10,22 +10,23 @@ interface ReviewTabProps {
 }
 
 const ReviewTab = ({ players }: ReviewTabProps) => {
-
-  const [review, setReview] = useState<string>(`this is the review for ${players[0].name}. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test.`);
+  const [review, setReview] = useState<string>(
+    `this is the review for ${players[0].name}. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test.`,
+  );
 
   const handlePlayerClick = (playerName: string) => {
-    setReview(`this is the review for ${playerName}. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test.`);
+    setReview(
+      `this is the review for ${playerName}. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test.`,
+    );
     console.log("hi " + playerName);
-  }
+  };
 
   return (
     <div className={styles.container}>
       <PlayersDisplay players={players} onPlayerClick={handlePlayerClick} />
       <div className={styles.tabContent}>
         <p>insert audio thing</p>
-        <Typography variant="body">
-          {review}
-        </Typography>
+        <Typography variant="body">{review}</Typography>
         <Link href="/">
           <Typography variant="body" className={styles.playAgain} bold>
             play again.
