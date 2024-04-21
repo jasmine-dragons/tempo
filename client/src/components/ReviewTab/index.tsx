@@ -8,10 +8,10 @@ import { GoogleGenerativeAI, } from "@google/generative-ai";
 
 interface ReviewTabProps {
   players: Player[];
-  blobs: string[];
+  // blobs: string[];
 }
 
-const ReviewTab = ({ players, blobs }: ReviewTabProps) => {
+const ReviewTab = ({ players }: ReviewTabProps) => {
 
   // map of player names to reviews; set when user clicks get ratings
   const [reviews, setReviews] = useState<Map<string, string>>(new Map());
