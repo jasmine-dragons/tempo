@@ -3,33 +3,35 @@ import Typography from "../Typography";
 import { useState, useEffect } from "react";
 import ReviewTabContent from "../ReviewTabContent";
 import Link from "next/link";
+import PlayersDisplay from "../PlayersDisplay";
+import { Player } from "../../types";
 
-const ReviewTab = () => {
+interface ReviewTabProps {
+  players: Player[];
+}
 
-  const players = ["test", "test1", "test2", "test3"];
+const ReviewTab = ({ players }: ReviewTabProps) => {
 
-  const [active, setActive] = useState<string>(players[0]);
+  const [review, setReview] = useState<string>(`this is the review for ${players[0].name}. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test.`);
+
+  const handlePlayerClick = (playerName: string) => {
+    setReview(`this is the review for ${playerName}. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test. this is a test.`);
+    console.log("hi " + playerName);
+  }
 
   return (
     <div className={styles.container}>
-      <div className={styles.tabNav}>
-        {players.map((player) => (
-        <div
-            className={styles.audio}
-            onClick={() => setActive(player)}
-            key={player}
-        >
-            {player}
-        </div>
-        ))}
-      </div>
+      <PlayersDisplay players={players} onPlayerClick={handlePlayerClick} />
       <div className={styles.tabContent}>
-        <ReviewTabContent player={active}/>
-        <Link href="/" className={styles.start}>
-        <Typography variant="body" className={styles.playAgain} bold>
-          play again.
+        <p>insert audio thing</p>
+        <Typography variant="body">
+          {review}
         </Typography>
-      </Link>
+        <Link href="/">
+          <Typography variant="body" className={styles.playAgain} bold>
+            play again.
+          </Typography>
+        </Link>
       </div>
     </div>
   );

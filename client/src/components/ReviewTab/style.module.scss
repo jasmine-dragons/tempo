@@ -10,19 +10,30 @@
         border-radius: 1rem;
     }
 
-    .audio {
-        background-color: vars.$navy;
-        margin: 1rem auto;
-        padding: 1rem;
-        border-radius: 1rem;
-    }
-
     .tabContent {
-        padding: 1rem;
+        margin: 1.5rem;
     }
 
     .playAgain {
         margin-top: 1rem;
         color: vars.$yellow;
+
+        transition: 0.3s all;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        width: 15rem;
+
+        &:hover {
+            transform: scale(1.1);
+            transform-origin: left;
+            font-weight: 500;
+        }
     }
 }
+
+@media (max-width: vars.$breakpoint) {
+    .container {
+      display: block;
+    }
+  }
