@@ -17,6 +17,10 @@
     .playAgain {
         margin-top: 1rem;
         color: vars.$yellow;
+        
+        position: absolute;
+        bottom: 2rem;
+        right: 0;
 
         transition: 0.3s all;
         text-align: left;
@@ -34,6 +38,6 @@
 
 @media (max-width: vars.$breakpoint) {
     .container {
-      display: block;
+        display: block;
     }
-  }
+}
