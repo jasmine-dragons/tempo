@@ -26,8 +26,9 @@ io.on("connect", (socket) => {
   socket.on('player join', ( { name, room }) => {
     const { user, error } = addUser(socket.id, name, room);
     if (error) return;
+    console.log(`User ${user.name} joined room ${user.room}. Socket ID: ${socket.id}`);
     socket.join(user.room);
-    socket.in(room).emit('notification', { title: 'Someone\'s here', description: `${user.name} just entered the room`});
+    io.in(room).emit('notification', { title: 'Someone\'s here', description: `${user.name} just entered the room`});
     io.in(room).emit('users', getUsers(room));
   });
 
@@ -36,7 +37,7 @@ io.on("connect", (socket) => {
   });
 
   socket.on('round end', () => {
-    
+
   });
 
   socket.on('judging', () => {
