@@ -17,7 +17,7 @@
 
 .buttons {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr auto;
   gap: 1rem;
 
   .button {
@@ -25,5 +25,6 @@
     border-radius: 1rem;
     border: 0;
     background-color: vars.$blue;
+    cursor: pointer;
   }
 }

@@ -2,7 +2,11 @@ import styles from "./style.module.scss";
 import Typography from "../Typography";
 import Link from "next/link";
 
-const InfoDisplay = (user: any) => {
+interface InfoDisplayProps {
+  startGame: () => void;
+}
+
+const InfoDisplay = ({ startGame }: InfoDisplayProps) => {
   return (
     <div className={styles.container}>
       <Typography variant="subheader" bold>{`how to play.`}</Typography>
@@ -26,11 +30,11 @@ const InfoDisplay = (user: any) => {
       </div>
       {localStorage.getItem("tempo-name") ==
       localStorage.getItem("tempo-leader") ? (
-        <Link href="/game" className={styles.start}>
+        <button type="button" onClick={startGame} className={styles.start}>
           <Typography variant="subheader" bold>
             let&apos;s start.
           </Typography>
-        </Link>
+        </button>
       ) : (
         <Typography variant="subheader" bold>
           waiting for leader...
