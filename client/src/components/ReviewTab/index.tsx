@@ -71,7 +71,7 @@ const ReviewTab = ({ players }: ReviewTabProps) => {
       <div className={styles.tabContent}>
         {reviewsDone ? (
           <div>
-            <Typography variant="body" bold>
+            <Typography variant="subheader" bold>
               click on a player's name to see a review of their music.
             </Typography>
             <p>insert audio thing</p>
