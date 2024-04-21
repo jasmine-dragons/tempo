@@ -59,9 +59,12 @@ const GameSessionSchema = mongoose.Schema(
             // list of users in game session
             type: [String]
         },
-        musicBlob: {
-            type: Buffer,
-        },
+        submissions: [
+            {
+                blob: Buffer,
+                user: String
+            }
+        ],
     },
     {
         timestamps: true
