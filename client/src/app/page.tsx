@@ -97,6 +97,12 @@ export default function Home() {
               />
             </label>
           </div>
+          <Link
+            href="/playground"
+            className={`${styles.option} ${styles.button}`}
+          >
+            <Typography variant="body">play solo.</Typography>
+          </Link>
         </div>
       </div>
     </main>

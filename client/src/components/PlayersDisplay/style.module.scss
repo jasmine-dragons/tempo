@@ -20,7 +20,7 @@
     justify-content: space-between;
     flex-direction: row;
     border-radius: 1rem;
-    background-color: vars.$navy;
+    background: linear-gradient(97deg, #1E2948 30.81%, #2A3A65 127.93%);
     color: vars.$white;
     align-items: center;
 
@@ -33,6 +33,7 @@
 
     &.empty {
       opacity: 0.8;
+      background: none;
       background-color: transparent;
       border: 2px solid #c5c5c5;
       color: vars.$navy;

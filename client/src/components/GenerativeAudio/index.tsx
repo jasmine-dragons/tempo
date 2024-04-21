@@ -11,7 +11,6 @@ import Image from "next/image";
 import Loading from "../Loading";
 import { generateMusic } from "@/api/musicGen";
 import Typography from "../Typography";
-import { AudioProps } from "../Studio";
 
 type State = "blank" | "loading" | "complete";
 interface ActionProps {
