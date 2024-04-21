@@ -13,16 +13,21 @@ interface ReviewTabProps {
 
 const ReviewTab = ({ players, blobs }: ReviewTabProps) => {
 
+  // map of player names to reviews; set when user clicks get ratings
   const [reviews, setReviews] = useState<Map<string, string>>(new Map());
+  // review that is currently showing up on the screen
   const [activeReview, setActiveReview] = useState<string>("");
+  // flag of whether user has clicked "get ratings"
   const [reviewsDone, setReviewsDone] = useState<boolean>(false);
    
   async function rateAudio() {
+
+    // super top secret key!!!
     const API_KEY = "AIzaSyActJyTQHwFVAjIkZbm7iBfdZ8vhNvPwhc";
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-pro-latest" });
 
-    console.log("sup");
+    console.log("generating reviews...");
 
     // Loop through players
     for (let i = 0; i < players.length; i++) {
@@ -46,7 +51,7 @@ const ReviewTab = ({ players, blobs }: ReviewTabProps) => {
       const text = response.text();
       setReviews(map => new Map(map.set(players[i].name, text)));
     }
-    console.log("done");
+    console.log("done generating reviews");
   }
 
   // show review associated with player
@@ -66,14 +71,18 @@ const ReviewTab = ({ players, blobs }: ReviewTabProps) => {
       <div className={styles.tabContent}>
         {reviewsDone ? (
           <div>
-            <p>Click on a player's name to see a review of their music.</p>
+            <Typography variant="body" bold>
+              Click on a player's name to see a review of their music.
+            </Typography>
             <p>insert audio thing</p>
             <Typography variant="body">
               {activeReview}
             </Typography>
           </div>
         ) : (
-          <button onClick={handleGenerateReviewsClick}>get ratings!</button>
+          <div>
+            <button onClick={handleGenerateReviewsClick} className={styles.getRatingsButton}>get ratings!</button>
+          </div>
         )}
         <Link href="/">
           <Typography variant="body" className={styles.playAgain} bold>
