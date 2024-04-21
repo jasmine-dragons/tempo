@@ -6,6 +6,8 @@ import AnimatedLogo from "../AnimatedLogo";
 import { mergeIntoBlob } from "@/utils/crunker";
 import { submitGame } from "@/api";
 import { Socket } from "socket.io-client";
+import { initializeSocket } from "@/utils/socket";
+import { useRouter } from "next/navigation";
 
 export interface AudioProps {
   prompt: string;
@@ -24,16 +26,16 @@ interface StudioProps {
   user?: string;
   uuid?: string;
   timer?: number;
-  socket?: Socket;
 }
 
-const Studio = ({ user, uuid, timer, socket }: StudioProps) => {
+const Studio = ({ user, uuid, timer }: StudioProps) => {
   const [stop, setStop] = useState<boolean>(false);
   const [restart, setRestart] = useState<boolean>(false);
   const blobRef1 = useRef<Blob | null>(null);
   const blobRef2 = useRef<Blob | null>(null);
   const blobRef3 = useRef<Blob | null>(null);
   const blobRef4 = useRef<Blob | null>(null);
+  const router = useRouter()
 
   const collectBlobs = async (): Promise<Blob> => {
     const validBlobs = [
@@ -53,11 +55,18 @@ const Studio = ({ user, uuid, timer, socket }: StudioProps) => {
   };
 
   const submit = async () => {
+    const socket = initializeSocket()
     const blob = await collectBlobs();
     console.log(blob);
     await submitGame(user || "", uuid || "", blob);
-    socket?.emit("judging");
+    socket.emit("judging");
   };
+
+  useEffect(() => {
+    const sock = initializeSocket()
+
+    sock.on("endGameState", async () => {await submit(); router.push(`/review/${uuid}`)});
+  }, [])
 
   useEffect(() => {
     if (timer === 0) {

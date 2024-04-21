@@ -79,6 +79,8 @@ export default function WaitingRoomPage({ params }: WaitingRoomPageProps) {
     );
   }
 
+  const user = searchParams.get('user') || ''
+
   const players: Player[] = game.users.map((user) => ({
     name: user,
     uuid: user,
@@ -95,7 +97,7 @@ export default function WaitingRoomPage({ params }: WaitingRoomPageProps) {
         </Link>
         <div className={styles.container}>
           <PlayersDisplay players={players} waiting onPlayerClick={() => {}} />
-          <InfoDisplay startGame={startGame} />
+          <InfoDisplay startGame={startGame} user={user} players={players} />
         </div>
       </div>
     </main>

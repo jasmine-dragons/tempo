@@ -6,8 +6,6 @@ import styles from "./page.module.scss";
 import { getGame } from "@/api";
 import Loading from "@/components/Loading";
 import { GameSession } from "@/types";
-import { initializeSocket } from "@/utils/socket";
-import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
 import { useSearchParams } from "next/navigation";
@@ -25,8 +23,6 @@ export default function GamePage({ params: { uuid } }: GamePageProps) {
   const [timer, setTimer] = useState<number>(300);
   const [user, setUser] = useState<string>("");
   const socket = useRef<Socket | null>(null);
-
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const fetchGame = () =>
@@ -37,9 +33,6 @@ export default function GamePage({ params: { uuid } }: GamePageProps) {
       .finally(() => setLoading(false));
 
   useEffect(() => {
-    const sock = initializeSocket();
-    socket.current = sock;
-
     setInterval(
       () =>
         setTimer((t) => {
@@ -50,8 +43,6 @@ export default function GamePage({ params: { uuid } }: GamePageProps) {
         }),
       1000,
     );
-
-    sock.on("endGameState", () => router.push(`/review/${uuid}`));
 
     const name = searchParams.get("user");
 
@@ -107,7 +98,6 @@ export default function GamePage({ params: { uuid } }: GamePageProps) {
           user={user}
           uuid={uuid}
           timer={timer}
-          socket={socket.current || undefined}
         />
       </div>
     </main>

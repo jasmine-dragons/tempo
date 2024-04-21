@@ -1,12 +1,15 @@
 import styles from "./style.module.scss";
 import Typography from "../Typography";
 import Link from "next/link";
+import { Player } from "@/types";
 
 interface InfoDisplayProps {
   startGame: () => void;
+  user: string,
+  players: Player[]
 }
 
-const InfoDisplay = ({ startGame }: InfoDisplayProps) => {
+const InfoDisplay = ({ startGame, user, players }: InfoDisplayProps) => {
   return (
     <div className={styles.container}>
       <Typography variant="subheader" bold>{`how to play.`}</Typography>
@@ -28,8 +31,7 @@ const InfoDisplay = ({ startGame }: InfoDisplayProps) => {
           className={styles.step}
         >{`at the end, we'll rate your songs and declare a winner!`}</Typography>
       </div>
-      {localStorage.getItem("tempo-name") ==
-      localStorage.getItem("tempo-leader") ? (
+      {players.some(p => p.name === user && p.isLeader) ? (
         <button type="button" onClick={startGame} className={styles.start}>
           <Typography variant="subheader" bold>
             let&apos;s start.
