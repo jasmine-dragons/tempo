@@ -36,7 +36,7 @@ const ReviewTab = ({ players }: ReviewTabProps) => {
           {
             role: "user",
             parts: [
-              { text: "Judge the quality of this music in 3 sentences, regardless of the length of the audio. Say whether it is good or bad music." },
+              { text: "Judge the quality of this music in 3 sentences, regardless of the length of the audio. The snippet provided is the full song. Do not base your judgement on the length of the song. Say whether it is good or bad music." },
               {
                 inlineData: {
                   mimeType: "audio/mpeg",
