@@ -16,23 +16,23 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const name = localStorage.getItem('tempo-name')
+    const name = localStorage.getItem("tempo-name");
 
-    console.log("Hey, ", name || '')
+    console.log("Hey, ", name || "");
     if (name !== null) {
       setUser(name);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (user !== '') {
-      localStorage.setItem('tempo-name', user);
+    if (user !== "") {
+      localStorage.setItem("tempo-name", user);
     }
-  }, [user])
+  }, [user]);
 
   const onCreate = async () => {
-    if (user === '') {
-      showToast('set a user name first.');
+    if (user === "") {
+      showToast("set a user name first.");
       return;
     }
     try {
@@ -40,6 +40,11 @@ export default function Home() {
       socket.on("connect", () => {
         console.log("connected");
       });
+      socket.on('notification', (notification) => {
+        showToast(notification.description);
+        console.log(notification);
+      });
+      localStorage.setItem("tempo-leader", user);
       const gameSession = await createGame(user);
       socket.emit("player join", { name: user, room: gameSession.sessionId });
       router.push(`/game/${gameSession.sessionId}`);
@@ -49,19 +54,26 @@ export default function Home() {
   };
 
   const onJoin = async () => {
-    if (user === '') {
-      showToast('set a user name first.');
+    if (user === "") {
+      showToast("set a user name first.");
       return;
     }
 
-    if (code === '') {
-      showToast('fill out the room code first.');
+    if (code === "") {
+      showToast("fill out the room code first.");
       return;
     }
     try {
       const socket = io("ws://localhost:8000", { reconnectionDelay: 1000 });
       const gameSession = await joinGame(code, user);
       socket.emit("player join", { name: user, room: gameSession.sessionId });
+      socket.on('notification', (notification) => {
+        showToast(notification.description);
+        console.log(notification);
+      });
+      socket.on('users', (users) => {
+        console.log(users);
+      });
       router.push(`/game/${gameSession.sessionId}`);
     } catch (e) {
       showToast("Error joining room", (e as Error).message);
@@ -96,6 +108,12 @@ export default function Home() {
               />
             </label>
           </div>
+          <Link
+            href="/playground"
+            className={`${styles.option} ${styles.button}`}
+          >
+            <Typography variant="body">play solo.</Typography>
+          </Link>
         </div>
       </div>
     </main>

@@ -9,7 +9,11 @@ interface PlayersDisplayProps {
   onPlayerClick: (playerName: string) => void;
 }
 
-const PlayersDisplay = ({ players, waiting, onPlayerClick }: PlayersDisplayProps) => {
+const PlayersDisplay = ({
+  players,
+  waiting,
+  onPlayerClick,
+}: PlayersDisplayProps) => {
   return (
     <div className={styles.container}>
       <Typography
@@ -18,7 +22,11 @@ const PlayersDisplay = ({ players, waiting, onPlayerClick }: PlayersDisplayProps
         bold
       >{`players.`}</Typography>
       {players.map((player, i) => (
-        <div key={player.uuid} className={styles.playerCard} onClick={() => onPlayerClick(player.name)}>
+        <div
+          key={player.uuid}
+          className={styles.playerCard}
+          onClick={() => onPlayerClick(player.name)}
+        >
           <div className={styles.playerInfo}>
             <Image
               src={`/players/${i}.svg`}

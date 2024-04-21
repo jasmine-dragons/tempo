@@ -2,7 +2,7 @@ import styles from "./style.module.scss";
 import Typography from "../Typography";
 import Link from "next/link";
 
-const InfoDisplay = () => {
+const InfoDisplay = (user: any) => {
   return (
     <div className={styles.container}>
       <Typography variant="subheader" bold>{`how to play.`}</Typography>
@@ -24,11 +24,18 @@ const InfoDisplay = () => {
           className={styles.step}
         >{`at the end, we'll rate your songs and declare a winner!`}</Typography>
       </div>
-      <Link href="/game" className={styles.start}>
+      {localStorage.getItem("tempo-name") ==
+      localStorage.getItem("tempo-leader") ? (
+        <Link href="/game" className={styles.start}>
+          <Typography variant="subheader" bold>
+            let&apos;s start.
+          </Typography>
+        </Link>
+      ) : (
         <Typography variant="subheader" bold>
-          let&apos;s start.
+          waiting for leader...
         </Typography>
-      </Link>
+      )}
     </div>
   );
 };

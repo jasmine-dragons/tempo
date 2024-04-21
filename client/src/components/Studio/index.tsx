@@ -27,10 +27,14 @@ const Studio = () => {
             onClick={() => setRestart((r) => !r)}
             className={styles.button}
           >
-            <Typography variant="body">replay all tracks.</Typography>
+            <Typography variant="body" bold>
+              replay all tracks.
+            </Typography>
           </button>
           <button onClick={() => setStop((r) => !r)} className={styles.button}>
-            <Typography variant="body">stop all tracks.</Typography>
+            <Typography variant="body" bold>
+              stop all tracks.
+            </Typography>
           </button>
         </div>
       </div>
