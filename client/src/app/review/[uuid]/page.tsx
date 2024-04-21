@@ -6,16 +6,15 @@ import PlayersDisplay from "@/components/PlayersDisplay";
 import { GameSession, Player } from "@/types";
 import { useState, useEffect } from "react";
 import styles from "./page.module.scss";
-import Typography from "@/components/Typography";
-import Link from "next/link";
+import ReviewTab from "../../../components/ReviewTab";
 
-interface GamePageProps {
+interface ReviewPageProps {
   params: {
     uuid: string;
   };
 }
 
-export default function GamePage({ params }: GamePageProps) {
+export default function ReviewPage({ params }: ReviewPageProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [game, setGame] = useState<GameSession | null>(null);
 
@@ -34,21 +33,8 @@ export default function GamePage({ params }: GamePageProps) {
         <Loading />
       </main>
     );
-  } else if (game === null || game === undefined) {
-    return (
-      <main>
-        <div className={styles.notFound}>
-          <Typography variant="subheader">
-            game couldn&apos;t be found.
-          </Typography>
-          <Link href="/" className={styles.notFoundLink}>
-            <Typography variant="body" bold>
-              back to home.
-            </Typography>
-          </Link>
-        </div>
-      </main>
-    );
+  } else if (game === null) {
+    return <main>game couldn&apos;t be found.</main>;
   }
 
   const players: Player[] = game.users.map((user) => ({
@@ -60,8 +46,7 @@ export default function GamePage({ params }: GamePageProps) {
   return (
     <main>
       <div className={styles.container}>
-        <PlayersDisplay players={players} waiting onPlayerClick={() => {}}/>
-        <InfoDisplay />
+        <ReviewTab players={players} />
       </div>
     </main>
   );
