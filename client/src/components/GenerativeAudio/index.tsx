@@ -82,7 +82,7 @@ const PlayRow = ({
   stop: boolean;
   restart: boolean;
   prompt: string;
-  clearTrack: () => void
+  clearTrack: () => void;
 }) => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(100);
@@ -121,44 +121,59 @@ const PlayRow = ({
     if (audio) {
       audio.volume = volume / 100;
     }
-  }, [volume])
+  }, [volume]);
 
   return (
     <div className={styles.playRow}>
       <div className={styles.playRowLeft}>
-      <button
-        type="button"
-        className={styles.button}
-        onClick={() => {
-          if (playing) {
-            audio?.pause();
-            setPlaying(false);
-          } else {
-            audio?.play();
-            setPlaying(true);
-          }
-        }}
-      >
-        <Image
-          src={!playing || audio?.ended ? "icons/play.svg" : "/icons/pause.svg"}
-          width={40}
-          height={40}
-          alt="Play the track"
-        />
-      </button>
-      <Typography variant="subheader" className={styles.prompt}>
-        {prompt}
-      </Typography>
+        <button
+          type="button"
+          className={styles.button}
+          onClick={() => {
+            if (playing) {
+              audio?.pause();
+              setPlaying(false);
+            } else {
+              audio?.play();
+              setPlaying(true);
+            }
+          }}
+        >
+          <Image
+            src={
+              !playing || audio?.ended ? "icons/play.svg" : "/icons/pause.svg"
+            }
+            width={40}
+            height={40}
+            alt="Play the track"
+          />
+        </button>
+        <Typography variant="subheader" className={styles.prompt}>
+          {prompt}
+        </Typography>
       </div>
       <div className={styles.options}>
         <button type="button" onClick={clearTrack} className={styles.button}>
-      <Image src="/icons/trash.svg" height={40} width={40} alt="Delete track" /></button>
-      <div className={styles.volume}>
-      <VolumeIcon volume={volume} />
-      <div className={styles.volumeSlider} >
-        <div className={styles.volumeOutline}>
-      <input type="range" min={0} max={100} onChange={(e) => setVolume(parseInt(e.target.value))} /></div></div>
-      </div>
+          <Image
+            src="/icons/trash.svg"
+            height={40}
+            width={40}
+            alt="Delete track"
+          />
+        </button>
+        <div className={styles.volume}>
+          <VolumeIcon volume={volume} />
+          <div className={styles.volumeSlider}>
+            <div className={styles.volumeOutline}>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                onChange={(e) => setVolume(parseInt(e.target.value))}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -191,10 +206,10 @@ const GenerativeAudio = ({ stop, restart }: GenerativeAudioProps) => {
   };
 
   const clearTrack = () => {
-    setPrompt('');
+    setPrompt("");
     setFile(null);
     setLoading(false);
-  }
+  };
 
   switch (state) {
     case "blank":
@@ -216,7 +231,13 @@ const GenerativeAudio = ({ stop, restart }: GenerativeAudioProps) => {
     case "complete":
       return (
         <div className={styles.container}>
-          <PlayRow file={file} stop={stop} restart={restart} prompt={prompt} clearTrack={clearTrack}/>
+          <PlayRow
+            file={file}
+            stop={stop}
+            restart={restart}
+            prompt={prompt}
+            clearTrack={clearTrack}
+          />
         </div>
       );
   }

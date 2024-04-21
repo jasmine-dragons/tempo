@@ -1,43 +1,43 @@
 @use "src/styles/vars.scss" as vars;
 
 .container {
-    display: grid;
-    grid-template-columns: 35% auto;
+  display: grid;
+  grid-template-columns: 35% auto;
 
-    .tabNav {
-        background-color: vars.$white;
-        padding: 0.8rem;
-        border-radius: 1rem;
+  .tabNav {
+    background-color: vars.$white;
+    padding: 0.8rem;
+    border-radius: 1rem;
+  }
+
+  .tabContent {
+    margin: 1.5rem;
+  }
+
+  .playAgain {
+    margin-top: 1rem;
+    color: vars.$yellow;
+
+    position: absolute;
+    bottom: 2rem;
+    right: 0;
+
+    transition: 0.3s all;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    width: 15rem;
+
+    &:hover {
+      transform: scale(1.1);
+      transform-origin: left;
+      font-weight: 500;
     }
-
-    .tabContent {
-        margin: 1.5rem;
-    }
-
-    .playAgain {
-        margin-top: 1rem;
-        color: vars.$yellow;
-        
-        position: absolute;
-        bottom: 2rem;
-        right: 0;
-
-        transition: 0.3s all;
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-        width: 15rem;
-
-        &:hover {
-            transform: scale(1.1);
-            transform-origin: left;
-            font-weight: 500;
-        }
-    }
+  }
 }
 
 @media (max-width: vars.$breakpoint) {
-    .container {
-        display: block;
-    }
+  .container {
+    display: block;
+  }
 }

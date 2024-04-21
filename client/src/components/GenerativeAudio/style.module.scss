@@ -87,11 +87,10 @@
     display: none;
 
     .volumeOutline {
-
-    background-color: vars.$navy;
-    padding: 1rem;
-    border-radius: 2rem;
-    outline: 4px solid vars.$white;
+      background-color: vars.$navy;
+      padding: 1rem;
+      border-radius: 2rem;
+      outline: 4px solid vars.$white;
     }
   }
 
