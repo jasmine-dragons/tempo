@@ -45,7 +45,6 @@ io.on("connect", (socket) => {
 
   socket.on("game start", () => {
     gameState.state = "playing";
-    console.log('lets start playing')
     io.sockets.emit('startGameState', 'playing');
   });
 
