@@ -7,7 +7,8 @@ import { Player } from "../../types";
 import { Content, GoogleGenerativeAI } from "@google/generative-ai";
 import SubmissionSummary from "../SubmissionSummary";
 
-const Prompt = (blob: Blob): Content[] => {
+const Prompt = (s: string): Content[] => {
+  const b64 = s.split('base64,')[1]
   return [
     {
       role: "user",
@@ -17,8 +18,8 @@ const Prompt = (blob: Blob): Content[] => {
         },
         {
           inlineData: {
-            mimeType: "audio/mpeg",
-            data: window.URL.createObjectURL(blob),
+            mimeType: "audio/mp3",
+            data: b64,
           },
         },
       ],
@@ -70,7 +71,7 @@ const ReviewTab = ({ players, submissions }: ReviewTabProps) => {
     [],
   );
 
-  async function rateAudio(player: AugmentedPlayer): Promise<string> {
+  async function rateAudio(player: AugmentedPlayer, url: string): Promise<string> {
     if (reviews.has(player.name)) {
       return reviews.get(player.name) || "";
     }
@@ -78,10 +79,11 @@ const ReviewTab = ({ players, submissions }: ReviewTabProps) => {
       return "";
     } else {
       const { response } = await model.generateContent({
-        contents: Prompt(new Blob([player.submissions[0].blob.data])),
+        contents: Prompt(url),
       });
       const text = response.text();
       setReviews((map) => new Map(map.set(player.name, text)));
+      console.log(text)
       return text;
     }
   }

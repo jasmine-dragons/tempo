@@ -12,7 +12,7 @@ interface SubmissionSummaryProps {
       data: ArrayBuffer;
     };
   };
-  rateAudio: (p: AugmentedPlayer) => Promise<string>;
+  rateAudio: (p: AugmentedPlayer, url: string) => Promise<string>;
   player: AugmentedPlayer;
 }
 
@@ -27,7 +27,7 @@ const SubmissionSummary = ({
   const handleClick = async () => {
     setLoading(true);
     try {
-      const rev = await rateAudio(player);
+      const rev = await rateAudio(player, url);
       setReview(rev);
     } catch (e) {
       console.error(e);
@@ -36,12 +36,18 @@ const SubmissionSummary = ({
   };
 
   const url = `data:audio/mp3;base64,${Buffer.from(submission.blob.data).toString("base64")}`;
+
   return (
     <>
       <audio controls src={url} />
-      <Typography variant="body" bold>
+      {review.length > 0 ? <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+      <Typography variant="body" className={styles.text} bold>
+        google gemini:
+      </Typography>
+      <Typography variant="body" className={styles.text}>
         {review}
       </Typography>
+      </div> : null}
       {loading ? (
         <Loading />
       ) : (
