@@ -59,9 +59,16 @@ export default function GamePage({ params }: GamePageProps) {
 
   return (
     <main>
-      <div className={styles.container}>
-        <PlayersDisplay players={players} waiting />
-        <InfoDisplay />
+      <div className={styles.page}>
+        <Link href="/" style={{ width: "fit-content" }}>
+          <Typography variant="body" className={styles.back} bold>
+            {"go back."}
+          </Typography>
+        </Link>
+        <div className={styles.container}>
+          <PlayersDisplay players={players} waiting onPlayerClick={() => {}} />
+          <InfoDisplay />
+        </div>
       </div>
     </main>
   );

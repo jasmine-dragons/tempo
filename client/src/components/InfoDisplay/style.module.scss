@@ -3,24 +3,30 @@
 .container {
   margin: 2rem;
   color: vars.$white;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 
-  .step {
-    margin: 1.2rem auto;
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .start {
-    color: vars.$yellow;
+    background-color: vars.$yellow;
+    color: vars.$navy;
+    border-radius: 1rem;
+    padding: 1rem;
 
-    // copy and pasted the animation
     transition: 0.3s all;
     text-align: left;
     display: flex;
     flex-direction: column;
-    width: 15rem;
+    width: fit-content;
 
     &:hover {
       transform: scale(1.1);
-      transform-origin: left;
       font-weight: 500;
     }
   }
