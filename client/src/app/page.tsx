@@ -8,15 +8,34 @@ import { createGame, joinGame } from "@/api";
 import { useRouter } from "next/navigation";
 import Hero from "@/components/Hero";
 import { io } from "socket.io-client";
+import showToast from "@/components/showToast";
 
 export default function Home() {
   const [code, setCode] = useState<string>("");
   const [user, setUser] = useState<string>("");
   const router = useRouter();
 
+  useEffect(() => {
+    const name = localStorage.getItem('tempo-name')
+
+    console.log("Hey, ", name || '')
+    if (name !== null) {
+      setUser(name);
+    }
+  }, [])
+
+  useEffect(() => {
+    if (user !== '') {
+      localStorage.setItem('tempo-name', user);
+    }
+  }, [user])
+
   const onCreate = async () => {
+    if (user === '') {
+      showToast('set a user name first.');
+      return;
+    }
     try {
-      console.log("lemme into the sock");
       const socket = io("ws://localhost:8000", { reconnectionDelay: 1000 });
       socket.on("connect", () => {
         console.log("connected");
@@ -25,18 +44,27 @@ export default function Home() {
       socket.emit("player join", { name: user, room: gameSession.sessionId });
       router.push(`/game/${gameSession.sessionId}`);
     } catch (e) {
-      console.error(e);
+      showToast("Error creating room", (e as Error).message);
     }
   };
 
   const onJoin = async () => {
+    if (user === '') {
+      showToast('set a user name first.');
+      return;
+    }
+
+    if (code === '') {
+      showToast('fill out the room code first.');
+      return;
+    }
     try {
       const socket = io("ws://localhost:8000", { reconnectionDelay: 1000 });
       const gameSession = await joinGame(code, user);
       socket.emit("player join", { name: user, room: gameSession.sessionId });
       router.push(`/game/${gameSession.sessionId}`);
     } catch (e) {
-      console.error(e);
+      showToast("Error joining room", (e as Error).message);
     }
   };
 

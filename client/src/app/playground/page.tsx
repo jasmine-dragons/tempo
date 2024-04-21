@@ -1,9 +1,7 @@
 "use client";
 import Studio from "@/components/Studio";
-import { useState } from "react";
 
-export default function MusicGen() {
-
+export default function Playground() {
   return (
     <main>
       <Studio />
