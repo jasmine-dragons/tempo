@@ -6,7 +6,7 @@ const cors = require("cors");
 import router from "./api";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import bodyParser from "body-parser";
+// import bodyParser from "body-parser";
 
 const { addUser, getUser, deleteUser, getUsers } = require("./users");
 
@@ -74,7 +74,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-app.use(bodyParser.raw({ type: '*/*',  limit: '50mb' }));
+// app.use(bodyParser.raw({ type: '*/*',  limit: '50mb' }));
 app.use("/", router);
 
 // app.use('/game/:id/submit', express.raw({ type: '*/*' }));

@@ -1,8 +1,11 @@
 const express = require('express');
 import * as uuid from 'uuid';
 const {GameSession} = require('./models/gameSession');
+import multer from 'multer';
 
 
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 
 // const upload = multer({ storage: multer.memoryStorage() });
@@ -60,7 +63,7 @@ router.post('/game', async (req, res) => {
 });
 
 // submit the game for a particular round
-router.post('/game/:id/submit', async (req, res) => {
+router.post('/game/:id/submit', upload.single('musicBlob'), async (req, res) => {
 
   // find a game based on the session id
   const game = await GameSession.findOne({ sessionId: req.params.id });
@@ -75,16 +78,26 @@ router.post('/game/:id/submit', async (req, res) => {
   // game.blob = buffer;
   // await game.save();
 
+  const buffer = req.file.buffer;
 
-  const buffer = req.body;
-  game.musicBlob = buffer;
-  await game.save();
+  const user = req.body.user;
+
+
+  // const buffer = req.body;
+  // game.musicBlob = buffer;
+  // await game.save();
+
+  const submission = { blob: buffer, user: user };
 
   // const wavFile = req.file;
   // console.log(req.file);
   // //Buffer.from(new Uint8Array(wavData))
   // game.musicBlob = wavFile.buffer;
   // await game.save();
+
+  game.submissions.push(submission);
+
+  await game.save();
 
 
   res.status(200).json({ game });
