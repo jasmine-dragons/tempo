@@ -6,6 +6,8 @@ import PlayersDisplay from "@/components/PlayersDisplay";
 import { GameSession, Player } from "@/types";
 import { useState, useEffect } from "react";
 import styles from "./page.module.scss";
+import Typography from "@/components/Typography";
+import Link from "next/link";
 
 interface GamePageProps {
   params: {
@@ -32,8 +34,21 @@ export default function GamePage({ params }: GamePageProps) {
         <Loading />
       </main>
     );
-  } else if (game === null) {
-    return <main>game couldn&apos;t be found.</main>;
+  } else if (game === null || game === undefined) {
+    return (
+      <main>
+        <div className={styles.notFound}>
+          <Typography variant="subheader">
+            game couldn&apos;t be found.
+          </Typography>
+          <Link href="/" className={styles.notFoundLink}>
+            <Typography variant="body" bold>
+              back to home.
+            </Typography>
+          </Link>
+        </div>
+      </main>
+    );
   }
 
   const players: Player[] = game.users.map((user) => ({

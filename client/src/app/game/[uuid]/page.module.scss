@@ -5,6 +5,20 @@
   grid-template-columns: 35% auto;
 }
 
+.notFound {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+
+  .notFoundLink {
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    background-color: vars.$white;
+    color: vars.$navy;
+  }
+}
+
 @media (max-width: vars.$breakpoint) {
   .container {
     display: block;
