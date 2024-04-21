@@ -35,6 +35,7 @@ const Studio = ({ user, uuid, timer }: StudioProps) => {
   const blobRef2 = useRef<Blob | null>(null);
   const blobRef3 = useRef<Blob | null>(null);
   const blobRef4 = useRef<Blob | null>(null);
+  const socketRef = useRef<Socket | null>(null);
   const router = useRouter()
 
   const collectBlobs = async (): Promise<Blob> => {
@@ -55,17 +56,18 @@ const Studio = ({ user, uuid, timer }: StudioProps) => {
   };
 
   const submit = async () => {
-    const socket = initializeSocket()
     const blob = await collectBlobs();
     console.log(blob);
     await submitGame(user || "", uuid || "", blob);
-    socket.emit("judging");
+    if (socketRef.current !== null) {
+      socketRef.current.emit("judging");
+    }
   };
 
   useEffect(() => {
-    const sock = initializeSocket()
+    socketRef.current = initializeSocket()
 
-    sock.on("endGameState", async () => {await submit(); router.push(`/review/${uuid}`)});
+    socketRef.current.on("endGameState", async () => router.push(`/review/${uuid}`));
   }, [])
 
   useEffect(() => {
