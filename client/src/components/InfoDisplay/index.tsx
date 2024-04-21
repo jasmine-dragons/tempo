@@ -18,11 +18,11 @@ const InfoDisplay = ({ startGame }: InfoDisplayProps) => {
         <Typography
           variant="subheader"
           className={styles.step}
-        >{`you'll receive a song someone else started; add to it using a phrase.`}</Typography>
+        >{`you'll have 5 minutes to generate music.`}</Typography>
         <Typography
           variant="subheader"
           className={styles.step}
-        >{`keep alternating songs and adding to them.`}</Typography>
+        >{`keep iterating on it, and unleash your creativity.`}</Typography>
         <Typography
           variant="subheader"
           className={styles.step}
