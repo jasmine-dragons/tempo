@@ -11,9 +11,26 @@ const GameSessionSchema = mongoose.Schema(
             type: String,
             required: true
         },
-        users: {
-            // list of users in game session
-            type: [String]
+        users: [
+            {
+                user: {
+                    type: String,
+                    required: true
+                },
+                audioFiles: [
+                    {
+                        round: Number,
+                        audioData: {
+                            type: Buffer,
+                            required: true
+                        }
+                    }
+                ]
+            }
+        ],
+        gameRound: {
+            type: Number,
+            required: true
         }
     },
     {
