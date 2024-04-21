@@ -1,7 +1,6 @@
 import styles from "./style.module.scss";
 import Typography from "../Typography";
 import { useState, useEffect } from "react";
-import ReviewTabContent from "../ReviewTabContent";
 import Link from "next/link";
 import PlayersDisplay from "../PlayersDisplay";
 import { Player } from "../../types";
