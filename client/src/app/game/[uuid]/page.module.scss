@@ -1,5 +1,25 @@
 @use "src/styles/vars.scss" as vars;
 
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-self: flex-start;
+}
+
+.back {
+  padding: 0.5rem 1rem;
+  border: 1px solid vars.$white;
+  border-radius: 1rem;
+  width: fit-content;
+  background-color: vars.$navy;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.1)
+  }
+}
+
 .container {
   display: grid;
   grid-template-columns: 35% auto;
