@@ -71,10 +71,11 @@ const ReviewTab = ({ players }: ReviewTabProps) => {
       <div className={styles.tabContent}>
         {reviewsDone ? (
           <div>
-            <Typography variant="body" bold>
-              click on a player's name to see a review of their music.
+            <Typography variant="subheader" bold>
+              how good was your music? click on a player's name to find out.
             </Typography>
-            <p>insert audio thing</p>
+            <p>(judged by Gemini AI)</p>
+            <p>[insert audio player thing here]</p>
             <Typography variant="body">
               {activeReview}
             </Typography>
