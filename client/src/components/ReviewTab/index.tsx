@@ -78,17 +78,19 @@ const ReviewTab = ({ players, blobs }: ReviewTabProps) => {
             <Typography variant="body">
               {activeReview}
             </Typography>
+            <Link href="/">
+            <Typography variant="body" className={styles.playAgain} bold>
+              play again.
+            </Typography>
+        </Link>
           </div>
         ) : (
           <div>
-            <button onClick={handleGenerateReviewsClick} className={styles.getRatingsButton}>get ratings!</button>
+            <button onClick={handleGenerateReviewsClick} className={styles.getRatingsButton}>
+              get ratings!
+            </button>
           </div>
         )}
-        <Link href="/">
-          <Typography variant="body" className={styles.playAgain} bold>
-            play again.
-          </Typography>
-        </Link>
       </div>
     </div>
   );

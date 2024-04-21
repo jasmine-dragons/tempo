@@ -5,6 +5,14 @@
     grid-template-columns: 35% auto;
 
     .getRatingsButton {
+        all: unset;
+        padding: 1rem 1.5rem;
+        white-space: nowrap;
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: vars.$navy;
+        border-radius: 0.5rem;
+        background-color: vars.$yellow;
         margin-right: 700px;
     }
 
