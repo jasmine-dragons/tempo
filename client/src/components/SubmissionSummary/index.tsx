@@ -49,7 +49,7 @@ const SubmissionSummary = ({
       </Typography>
       </div> : null}
       {loading ? (
-        <Loading />
+        <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}><Loading /></div>
       ) : (
         <button
           type="button"
