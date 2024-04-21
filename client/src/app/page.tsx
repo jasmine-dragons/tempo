@@ -16,6 +16,8 @@ export default function Home() {
   const [user, setUser] = useState<string>("");
   const router = useRouter();
 
+  const queryParam = new URLSearchParams({ user }).toString();
+
   useEffect(() => {
     const name = localStorage.getItem("tempo-name");
     if (name !== null) {
@@ -39,14 +41,14 @@ export default function Home() {
       socket.on("connect", () => {
         console.log("connected");
       });
-      socket.on('notification', (notification) => {
+      socket.on("notification", (notification) => {
         showToast(notification.description);
         console.log(notification);
       });
       localStorage.setItem("tempo-leader", user);
       const gameSession = await createGame(user);
       socket.emit("player join", { name: user, room: gameSession.sessionId });
-      router.push(`/game/${gameSession.sessionId}`);
+      router.push(`/room/${gameSession.sessionId}?${queryParam}`);
     } catch (e) {
       showToast("Error creating room", (e as Error).message);
     }
@@ -66,14 +68,14 @@ export default function Home() {
       const socket = initializeSocket();
       const gameSession = await joinGame(code, user);
       socket.emit("player join", { name: user, room: gameSession.sessionId });
-      socket.on('notification', (notification) => {
+      socket.on("notification", (notification) => {
         showToast(notification.description);
         console.log(notification);
       });
-      socket.on('users', (users) => {
+      socket.on("users", (users) => {
         console.log(users);
       });
-      router.push(`/game/${gameSession.sessionId}`);
+      router.push(`/room/${gameSession.sessionId}?${queryParam}`);
     } catch (e) {
       showToast("Error joining room", (e as Error).message);
     }

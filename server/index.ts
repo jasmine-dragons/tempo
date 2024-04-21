@@ -39,19 +39,19 @@ io.on("connect", (socket) => {
         description: `${user.name} just entered the room`,
       });
 
-    console.log("player join", name)
     io.sockets.emit("users", getUsers(room));
     //io.emit('gameState', gameState);
   });
 
   socket.on("game start", () => {
     gameState.state = "playing";
-    io.sockets.emit('gameState', 'playing');
+    console.log('lets start playing')
+    io.sockets.emit('startGameState', 'playing');
   });
 
   socket.on("judging", () => {
     gameState.state = "judging";
-    // io.emit('gameState', gameState);
+    io.sockets.emit('endGameState', 'judging');
   });
 
   socket.on("disconnect", () => {

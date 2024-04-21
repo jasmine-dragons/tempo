@@ -1,56 +1,80 @@
 @use "src/styles/vars.scss" as vars;
 
+.bigContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .container {
-    display: grid;
-    grid-template-columns: 35% auto;
+  display: grid;
+  grid-template-columns: auto auto;
+  width: 100%;
+  gap: 2rem;
 
-    .getRatingsButton {
-        all: unset;
-        padding: 1rem 1.5rem;
-        white-space: nowrap;
-        font-weight: bold;
-        font-size: 1.5rem;
-        color: vars.$navy;
-        border-radius: 0.5rem;
-        background-color: vars.$yellow;
-        margin-right: 700px;
+  .getRatingsButton {
+    all: unset;
+    padding: 1rem 1.5rem;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: vars.$navy;
+    border-radius: 0.5rem;
+    background-color: vars.$yellow;
+    margin-right: 700px;
+  }
+
+  .subheader {
+    color: vars.$navy;
+  }
+
+  .tabContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    background-color: vars.$white;
+    border-radius: 1rem;
+  }
+
+  .playAgain {
+    margin-top: 1rem;
+    color: vars.$yellow;
+
+    transition: 0.3s all;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    width: 15rem;
+
+    &:hover {
+      transform: scale(1.1);
+      transform-origin: left;
+      font-weight: 500;
     }
+  }
+}
 
-    .tabNav {
-        background-color: vars.$white;
-        padding: 0.8rem;
-        border-radius: 1rem;
-    }
+.back {
+  padding: 0.5rem 1rem;
+  border: 1px solid vars.$white;
+  border-radius: 1rem;
+  width: fit-content;
+  background-color: vars.$navy;
+  transition: all 0.3s;
 
-    .tabContent {
-        margin: 1.5rem;
-    }
-
-    .playAgain {
-        margin-top: 1rem;
-        color: vars.$yellow;
-
-        transition: 0.3s all;
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-        width: 15rem;
-
-        &:hover {
-            transform: scale(1.1);
-            transform-origin: left;
-            font-weight: 500;
-        }
-    }
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 @media (max-width: vars.$breakpoint) {
-    .container {
-        display: block;
+  .container {
+    display: block;
 
-        .getRatingsButton {
-            width: 100px;
-            margin-right: auto;
-        }
+    .getRatingsButton {
+      width: 100px;
+      margin-right: auto;
     }
+  }
 }

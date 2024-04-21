@@ -61,6 +61,10 @@ router.post('/game', async (req, res) => {
 
 // submit the game for a particular round
 router.post('/game/:id/submit', async (req, res) => {
+  if (!req.query.user || !req.params.id) {
+    return res.status(400).json({ error: "Bad request" });
+  }
+  console.info(`Received submission from ${req.query.user}`)
 
   // find a game based on the session id
   const game = await GameSession.findOne({ sessionId: req.params.id });
@@ -75,9 +79,9 @@ router.post('/game/:id/submit', async (req, res) => {
   // game.blob = buffer;
   // await game.save();
 
-
+  console.log(req.body)
   const buffer = req.body;
-  game.musicBlob = buffer;
+  game.submissions.push({user: req.query.user, blob: buffer});
   await game.save();
 
   // const wavFile = req.file;
