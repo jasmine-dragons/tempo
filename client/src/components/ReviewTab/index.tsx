@@ -29,8 +29,6 @@ const ReviewTab = ({ players }: ReviewTabProps) => {
 
     console.log("generating reviews...");
 
-    // const parts: any = [{ text: "Does this audio go hard? Give a short 3 sentence explanation why." }];
-
     // Loop through players
     for (let i = 0; i < players.length; i++) {
       const model_content =
